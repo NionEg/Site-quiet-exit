@@ -1,0 +1,141 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Тёплая «бумажная» палитра: тишина вместо кислоты */
+    --paper: 43 38% 96%;        /* #FAF7F0 — основной фон */
+    --paper-deep: 40 34% 91%;   /* #F1EBDF — глубокий фон секций */
+    --ink: 27 14% 15%;          /* #2B2521 — мягкий угольный текст */
+    --ink-muted: 32 12% 40%;    /* #6F6556 — вторичный текст */
+    --ink-faint: 34 15% 59%;    /* #A29784 — третичный текст */
+    --line: 38 28% 84%;         /* #E4DBC9 — волосяные линии */
+    --brand: 197 26% 35%;       /* #42626F — приглушённый синий */
+    --brand-deep: 200 30% 27%;  /* #314C58 */
+    --accent-tint: 195 22% 90%; /* #DFE7E8 — подложка акцента */
+    --sand: 38 34% 88%;         /* #EAE3D2 — тёплая подложка */
+
+    /* Маппинг на shadcn-переменные */
+    --background: var(--paper);
+    --foreground: var(--ink);
+    --card: 43 38% 98%;
+    --card-foreground: var(--ink);
+    --popover: 43 38% 98%;
+    --popover-foreground: var(--ink);
+    --primary: var(--brand);
+    --primary-foreground: 43 38% 97%;
+    --secondary: var(--sand);
+    --secondary-foreground: var(--ink);
+    --muted: var(--paper-deep);
+    --muted-foreground: var(--ink-muted);
+    --accent: var(--accent-tint);
+    --accent-foreground: var(--brand-deep);
+    --destructive: 6 42% 42%;
+    --destructive-foreground: 43 38% 97%;
+    --border: var(--line);
+    --input: var(--line);
+    --ring: 197 26% 35%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: "Inter", -apple-system, "Segoe UI", sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: hsl(var(--accent-tint));
+    color: hsl(var(--brand-deep));
+  }
+
+  .font-serif {
+    font-family: "PT Serif", Georgia, "Times New Roman", serif;
+  }
+
+  .font-mono {
+    font-family: "PT Mono", ui-monospace, monospace;
+  }
+}
+
+@layer components {
+  /* Волосяная линия-разделитель секций */
+  .hairline {
+    border-top: 1px solid hsl(var(--line));
+  }
+
+  /* Номерованный eyebrow над заголовком секции */
+  .eyebrow {
+    @apply font-mono uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    color: hsl(var(--ink-faint));
+  }
+
+  /* Спокойная кнопка — без теней и пульсаций */
+  .btn-primary {
+    @apply inline-flex min-h-[48px] items-center justify-center rounded-lg px-7 py-3 text-base font-medium transition-colors duration-300;
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+  .btn-primary:hover {
+    background: hsl(var(--brand-deep));
+  }
+
+  .btn-quiet {
+    @apply inline-flex min-h-[48px] items-center justify-center rounded-lg border px-7 py-3 text-base font-medium transition-colors duration-300;
+    border-color: hsl(var(--line));
+    color: hsl(var(--ink));
+    background: transparent;
+  }
+  .btn-quiet:hover {
+    border-color: hsl(var(--ink-faint));
+    background: hsl(var(--paper-deep));
+  }
+
+  .link-quiet {
+    color: hsl(var(--primary));
+    text-decoration: underline;
+    text-decoration-color: hsl(var(--accent-tint));
+    text-underline-offset: 4px;
+    transition: text-decoration-color 0.3s ease;
+  }
+  .link-quiet:hover {
+    text-decoration-color: hsl(var(--primary));
+  }
+}
+
+/* ---- Медленные проявления при скролле ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s ease;
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
